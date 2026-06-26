@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tanishk Mehta — Software Engineer</title>
+<meta name="description" content="Tanishk Mehta — Software Engineer at Wells Fargo India. Distributed systems, Kafka pipelines, Java/Spring Boot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0E14;
+    --surface:#11141C;
+    --card:#161A24;
+    --paper:#E8E6E0;
+    --paper-dim:#A8A6A0;
+    --signal:#3DD6B0;
+    --signal-dim:#2A9C80;
+    --slate:#6B7280;
+    --line:#22272F;
+    --radius:10px;
+    --display:'Space Grotesk',sans-serif;
+    --mono:'IBM Plex Mono',monospace;
+    --body:'Inter',sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--body);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  ::selection{background:var(--signal);color:var(--ink);}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--signal);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:780px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- background grid texture ---------- */
+  .bg-grid{
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+    opacity:0.25;
+    pointer-events:none;
+    z-index:0;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  /* ---------- pipeline rail ---------- */
+  .rail{
+    position:absolute;
+    left:50%;
+    transform:translateX(-360px);
+    top:0;
+    bottom:0;
+    width:2px;
+    background:linear-gradient(to bottom, transparent, var(--line) 4%, var(--line) 96%, transparent);
+    z-index:1;
+  }
+  @media (max-width:860px){ .rail{ display:none; } }
+
+  .rail-pulse{
+    position:absolute;
+    left:-2px;
+    top:0;
+    width:6px;
+    height:120px;
+    background:linear-gradient(to bottom, transparent, var(--signal), transparent);
+    filter:blur(2px);
+    opacity:0.7;
+    animation:flow 7s linear infinite;
+  }
+  @keyframes flow{
+    0%{ top:-120px; }
+    100%{ top:100%; }
+  }
+
+  .node{
+    position:absolute;
+    left:50%;
+    transform:translateX(-361.5px);
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--signal);
+    box-shadow:0 0 0 4px rgba(61,214,176,0.12);
+    z-index:2;
+  }
+  @media (max-width:860px){ .node{ display:none; } }
+
+  /* ---------- topbar ---------- */
+  header.top{
+    position:sticky;
+    top:0;
+    z-index:10;
+    backdrop-filter:blur(10px);
+    background:rgba(11,14,20,0.82);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 28px;
+    max-width:780px;
+    margin:0 auto;
+  }
+  .brand{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--signal);
+    letter-spacing:0.02em;
+  }
+  .brand b{ color:var(--paper); font-weight:500; }
+  nav.toplinks{
+    display:flex;
+    gap:22px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--paper-dim);
+  }
+  nav.toplinks a{ transition:color .15s ease; }
+  nav.toplinks a:hover{ color:var(--signal); }
+  @media (max-width:600px){ nav.toplinks{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:96px 0 64px;
+    z-index:2;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--signal);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--signal);
+    box-shadow:0 0 8px var(--signal);
+    animation:blink 2.4s ease-in-out infinite;
+  }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+
+  h1.name{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(40px,7vw,64px);
+    line-height:1.02;
+    letter-spacing:-0.01em;
+    color:var(--paper);
+  }
+  h1.name span{ color:var(--signal); }
+
+  .role{
+    font-family:var(--display);
+    font-weight:500;
+    font-size:clamp(17px,2.4vw,21px);
+    color:var(--paper-dim);
+    margin-top:14px;
+  }
+
+  .lede{
+    margin-top:26px;
+    max-width:560px;
+    font-size:16px;
+    color:#C7C5BE;
+  }
+
+  .hero-actions{
+    margin-top:34px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .btn{
+    font-family:var(--mono);
+    font-size:13px;
+    padding:11px 18px;
+    border-radius:7px;
+    border:1px solid var(--line);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn.primary{
+    background:var(--signal);
+    color:var(--ink);
+    border-color:var(--signal);
+    font-weight:500;
+  }
+  .btn.primary:hover{ background:#4FE3C1; }
+  .btn.ghost:hover{ border-color:var(--signal); color:var(--signal); }
+
+  .meta-strip{
+    margin-top:46px;
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--slate);
+    border-top:1px solid var(--line);
+    padding-top:18px;
+  }
+  .meta-strip strong{ color:var(--paper-dim); font-weight:500; }
+
+  /* ---------- sections ---------- */
+  section{
+    position:relative;
+    padding:64px 0;
+    z-index:2;
+    border-top:1px solid var(--line);
+  }
+
+  .stage-label{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--signal);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .stage-label::before{
+    content:'';
+    width:6px;height:6px;
+    background:var(--signal);
+    border-radius:50%;
+  }
+
+  h2.section-title{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(24px,3.5vw,30px);
+    color:var(--paper);
+    margin-bottom:8px;
+  }
+
+  .section-sub{
+    font-size:14.5px;
+    color:var(--paper-dim);
+    max-width:520px;
+    margin-bottom:36px;
+  }
+
+  /* ---------- experience entries (log style) ---------- */
+  .entry{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:24px 26px;
+    margin-bottom:18px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .entry:hover{
+    border-color:var(--signal-dim);
+    transform:translateX(3px);
+  }
+  .entry-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:4px;
+  }
+  .entry-role{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:17px;
+    color:var(--paper);
+  }
+  .entry-time{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--signal);
+    background:rgba(61,214,176,0.08);
+    border:1px solid rgba(61,214,176,0.25);
+    padding:3px 9px;
+    border-radius:5px;
+    white-space:nowrap;
+  }
+  .entry-org{
+    font-size:13.5px;
+    color:var(--paper-dim);
+    margin-bottom:14px;
+  }
+  .entry ul{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .entry li{
+    font-size:14.5px;
+    color:#C7C5BE;
+    padding-left:18px;
+    position:relative;
+  }
+  .entry li::before{
+    content:'›';
+    position:absolute;
+    left:0;
+    color:var(--signal-dim);
+    font-family:var(--mono);
+  }
+  .entry-tags{
+    margin-top:16px;
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+  }
+  .tag{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--slate);
+    border:1px solid var(--line);
+    padding:3px 8px;
+    border-radius:5px;
+  }
+
+  /* ---------- skills ---------- */
+  .skill-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+  }
+  @media (max-width:560px){ .skill-grid{ grid-template-columns:1fr; } }
+  .skill-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 20px;
+  }
+  .skill-card .k-label{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--signal);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:10px;
+  }
+  .skill-card .k-items{
+    font-size:14px;
+    color:#C7C5BE;
+    line-height:1.7;
+  }
+
+  /* ---------- education ---------- */
+  .edu-entry{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    padding:18px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .edu-entry:last-child{ border-bottom:none; }
+  .edu-school{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:16px;
+    color:var(--paper);
+  }
+  .edu-deg{
+    font-size:13.5px;
+    color:var(--paper-dim);
+    margin-top:3px;
+  }
+  .edu-meta{
+    text-align:right;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--slate);
+    white-space:nowrap;
+  }
+  .edu-grade{
+    color:var(--signal);
+    font-weight:500;
+  }
+
+  /* ---------- accomplishments ---------- */
+  .accomplishments{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .acc-row{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+    font-size:14.5px;
+    color:#C7C5BE;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .acc-row:last-child{ border-bottom:none; }
+  .acc-row .acc-tag{
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--signal);
+    border:1px solid rgba(61,214,176,0.25);
+    background:rgba(61,214,176,0.06);
+    padding:2px 7px;
+    border-radius:4px;
+    flex-shrink:0;
+  }
+
+  /* ---------- contact / footer ---------- */
+  .contact-card{
+    background:linear-gradient(135deg, var(--card), var(--surface));
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:42px 36px;
+    text-align:center;
+  }
+  .contact-card h2{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(22px,3.5vw,28px);
+    margin-bottom:10px;
+  }
+  .contact-card p{
+    color:var(--paper-dim);
+    font-size:14.5px;
+    margin-bottom:26px;
+  }
+  .contact-actions{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  footer{
+    padding:36px 0 50px;
+    text-align:center;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--slate);
+    position:relative;
+    z-index:2;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .rail-pulse, .eyebrow .dot{ animation:none; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="rail"><div class="rail-pulse"></div></div>
+<div class="node" style="top:118px;"></div>
+<div class="node" style="top:540px;"></div>
+<div class="node" style="top:1180px;"></div>
+<div class="node" style="top:1820px;"></div>
+<div class="node" style="top:2180px;"></div>
+
+<header class="top">
+  <div class="topbar">
+    <div class="brand"><b>tanishk</b>@pipeline:~$</div>
+    <nav class="toplinks">
+      <a href="#experience">experience</a>
+      <a href="#skills">skills</a>
+      <a href="#education">education</a>
+      <a href="#contact">contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" style="border-top:none;">
+    <div class="eyebrow"><span class="dot"></span> AVAILABLE — OPEN TO OPPORTUNITIES</div>
+    <h1 class="name">Tanishk<br>Mehta<span>.</span></h1>
+    <p class="role">Software Engineer — Distributed Systems &amp; Data Pipelines</p>
+    <p class="lede">I build high-throughput backend systems that move financial data reliably at scale — currently engineering Kafka-based ingestion pipelines for critical payment processing at Wells Fargo. Java/Spring Boot at the core, with full-stack range across React.</p>
+
+    <div class="hero-actions">
+      <a class="btn primary" href="mailto:tanishkmehta6@gmail.com">→ Get in touch</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/tanishk-mehta-469839244/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn ghost" href="#" id="resumeLink">Download résumé (PDF)</a>
+    </div>
+
+    <div class="meta-strip">
+      <div><strong>Location</strong> · Bengaluru, India</div>
+      <div><strong>Experience</strong> · 2+ years</div>
+      <div><strong>Stack</strong> · Java · Kafka · Spring Boot · React</div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="stage-label">stage 01 — ingest</div>
+    <h2 class="section-title">Experience</h2>
+    <p class="section-sub">Where the work happened, and what moved through it.</p>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-role">Software Engineer</span>
+        <span class="entry-time">SEP 2025 — CURRENT</span>
+      </div>
+      <div class="entry-org">Wells Fargo India · Bengaluru</div>
+      <ul>
+        <li>Engineered mission-critical modules processing high-volume NACHA payment files, ensuring data reliability and compliance for downstream banking applications.</li>
+        <li>Built a custom Directory Monitor service to split large input files for parallel processing, driving significant throughput gains across the pipeline.</li>
+        <li>Implemented a Kafka ingestion workflow end-to-end: a Producer converting raw NACHA files to Avro and publishing via Kafka, and a Consumer transforming Avro records into the standardized UPOv5 structure.</li>
+        <li>Contributed to Operational Data Store (ODS) components — validation, error handling, and persistence for reliable storage and recovery.</li>
+      </ul>
+      <div class="entry-tags">
+        <span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Kafka</span><span class="tag">SQL</span><span class="tag">HiveQL</span><span class="tag">Avro</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-role">Program Associate</span>
+        <span class="entry-time">AUG 2024 — SEP 2025</span>
+      </div>
+      <div class="entry-org">Wells Fargo India · Bengaluru</div>
+      <ul>
+        <li>Led the revamp of the LogicBox UI from vanilla JavaScript to a modern React-based framework (WFRIA), improving maintainability, performance, and UX.</li>
+        <li>Integrated the new React frontend with a Spring Boot backend for seamless, scalable API-driven functionality.</li>
+        <li>Designed metadata-driven UI components with interactive features, holding strict ADA accessibility compliance throughout.</li>
+        <li>Collaborated cross-functionally across agile teams to migrate legacy applications toward a modern microservices architecture.</li>
+      </ul>
+      <div class="entry-tags">
+        <span class="tag">React</span><span class="tag">Spring Boot</span><span class="tag">Java</span><span class="tag">JSON</span><span class="tag">ADA Compliance</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <span class="entry-role">Intern Analyst</span>
+        <span class="entry-time">FEB 2024 — JUN 2024</span>
+      </div>
+      <div class="entry-org">Wells Fargo India · Hyderabad</div>
+      <ul>
+        <li>Built a full-stack web application to streamline submission of complex financial data, improving data quality and operational efficiency.</li>
+        <li>Implemented dual data-entry paths — manual input or automated population from CSV — reducing manual errors.</li>
+        <li>Implemented dynamic form generation from JSON schemas, letting the platform adapt to evolving datasets without code changes.</li>
+      </ul>
+      <div class="entry-tags">
+        <span class="tag">React</span><span class="tag">HTML/CSS</span><span class="tag">JSON</span><span class="tag">JavaScript</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="stage-label">stage 02 — process</div>
+    <h2 class="section-title">Skills</h2>
+    <p class="section-sub">The tools the pipeline runs on.</p>
+
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="k-label">Backend &amp; Core</div>
+        <div class="k-items">Java · Spring Boot · REST APIs · JSON</div>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">Data &amp; Messaging</div>
+        <div class="k-items">Apache Kafka · RDBMS · MongoDB</div>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">Testing &amp; Quality</div>
+        <div class="k-items">JUnit · Mockito · BDD</div>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">DevOps &amp; CI/CD</div>
+        <div class="k-items">Git · Gradle · SonarQube · CI/CD</div>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">Frontend</div>
+        <div class="k-items">ReactJS · HTML · CSS · JavaScript</div>
+      </div>
+      <div class="skill-card">
+        <div class="k-label">Modern Tech</div>
+        <div class="k-items">GenAI principles in SDLC · Agile / Scrum</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="stage-label">stage 03 — validate</div>
+    <h2 class="section-title">Education</h2>
+
+    <div class="edu-entry">
+      <div>
+        <div class="edu-school">Vellore Institute of Technology (VIT)</div>
+        <div class="edu-deg">B.Tech, Computer Science &amp; Engineering</div>
+      </div>
+      <div class="edu-meta">JAN 2024<br><span class="edu-grade">CGPA 9.67/10.0</span></div>
+    </div>
+
+    <div class="edu-entry">
+      <div>
+        <div class="edu-school">Central Academy Sr. Sec. School</div>
+        <div class="edu-deg">High School Diploma</div>
+      </div>
+      <div class="edu-meta">JUL 2020<br><span class="edu-grade">95.2%</span></div>
+    </div>
+
+    <div style="margin-top:36px;">
+      <div class="stage-label" style="margin-bottom:18px;">stage 04 — output</div>
+      <div class="accomplishments">
+        <div class="acc-row"><span class="acc-tag">CERT</span> AWS Certified Cloud Practitioner (CLF-C02)</div>
+        <div class="acc-row"><span class="acc-tag">PROGRAM</span> Completed McKinsey.org Forward Program (Class of 2025)</div>
+        <div class="acc-row"><span class="acc-tag">PROGRAM</span> Selected — Wipro TalentNext / Future Skills 2022</div>
+        <div class="acc-row"><span class="acc-tag">SELECT</span> Selected for SPIC MACAY Camp, IIT Guwahati</div>
+        <div class="acc-row"><span class="acc-tag">SPORT</span> State-Level Badminton Player</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-card">
+      <h2>Let's build something reliable.</h2>
+      <p>Open to software engineering roles in backend, distributed systems, and platform engineering.</p>
+      <div class="contact-actions">
+        <a class="btn primary" href="mailto:tanishkmehta6@gmail.com">tanishkmehta6@gmail.com</a>
+        <a class="btn ghost" href="tel:+918619169675">+91 86191 69675</a>
+        <a class="btn ghost" href="https://www.linkedin.com/in/tanishk-mehta-469839244/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  built &amp; deployed · Bengaluru, India · © 2026 Tanishk Mehta
+</footer>
+
+</body>
+</html>
